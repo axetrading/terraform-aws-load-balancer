@@ -2,7 +2,7 @@ resource "aws_lb_target_group" "this" {
   name                 = var.name
   port                 = var.port
   protocol             = var.protocol
-  protocol_version =   var.protocol_version
+  protocol_version     = var.protocol_version
   vpc_id               = var.vpc_id
   target_type          = var.target_type
   deregistration_delay = var.deregistration_delay

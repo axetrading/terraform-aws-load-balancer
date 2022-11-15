@@ -17,9 +17,9 @@ variable "eks_cluster_name" {
 }
 
 variable "target_group_arn" {
-  type = string
+  type        = string
   description = "AWS Load Balancer Target Group ARN"
-  default = null
+  default     = null
 }
 
 variable "tags" {

@@ -15,9 +15,9 @@ variable "protocol" {
 }
 
 variable "protocol_version" {
-  type = string
+  type        = string
   description = "Only applicable when protocol is HTTP or HTTPS"
-  default = null
+  default     = null
 }
 
 variable "vpc_id" {
