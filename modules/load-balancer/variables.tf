@@ -1,3 +1,5 @@
+
+
 variable "create_load_balancer" {
   type        = bool
   default     = true
@@ -121,6 +123,7 @@ variable "region" {
   default     = "eu-west-2"
 }
 
+## Listeners variables
 
 variable "lb_listeners" {
   type        = any
@@ -128,20 +131,14 @@ variable "lb_listeners" {
   description = "AWS Load Balancer Listners"
 }
 
+variable "certificate_arn" {
+  type        = string
+  description = "AWS ACM Certificate ARN that should be used for the load balancer listner HTTPS or TLS"
+  default     = null
+}
+
 variable "load_balancer_arn" {
   type        = string
   description = "Existing Load Balancer ARN"
   default     = "value"
-}
-
-variable "certificate_arn" {
-  type = string
-  description = "AWS ACM Certificate ARN that should be used for the load balancer listner HTTPS or TLS"
-  default = null
-}
-
-variable "target_groups" {
-  type = any
-  default = {}
-  description = "Target Group Configuration Block"
 }

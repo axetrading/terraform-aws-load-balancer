@@ -1,5 +1,5 @@
 variable "name" {
-  type = string
+  type        = string
   description = "Name of the target group"
 }
 variable "port" {
@@ -12,6 +12,12 @@ variable "protocol" {
   type        = string
   description = "Protocol to use to connect with the target"
   default     = "HTTP"
+}
+
+variable "protocol_version" {
+  type = string
+  description = "Only applicable when protocol is HTTP or HTTPS"
+  default = null
 }
 
 variable "vpc_id" {
