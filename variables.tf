@@ -125,10 +125,35 @@ variable "region" {
 
 ## Listeners variables
 
-variable "lb_listeners" {
-  type        = any
-  default     = {}
-  description = "AWS Load Balancer Listners"
+variable "http_listener_port" {
+  type        = string
+  description = "HTTP listener port"
+  default     = "80"
+}
+
+variable "https_listener_port" {
+  type        = string
+  description = "HTTP listener port"
+  default     = "443"
+}
+
+
+variable "http_listener_protocol" {
+  type        = string
+  description = "HTTP Listener Protocol"
+  default     = "HTTP"
+}
+
+variable "http_listener_enabled" {
+  type        = bool
+  description = "Whether to create or not the http, port 80, alb listener"
+  default     = true
+}
+
+variable "https_listener_enabled" {
+  type        = bool
+  description = "Whether to create or not the https, port 443, alb listener"
+  default     = true
 }
 
 variable "certificate_arn" {
@@ -137,8 +162,20 @@ variable "certificate_arn" {
   default     = null
 }
 
+variable "ssl_policy" {
+  type        = string
+  description = "Name of the SSL Policy for the listener."
+  default     = "ELBSecurityPolicy-2016-08"
+}
+
 variable "load_balancer_arn" {
   type        = string
   description = "Existing Load Balancer ARN"
   default     = "value"
+}
+
+variable "target_groups" {
+  type        = list(any)
+  description = "A list of AWS Load Balancer Target Groups"
+  default     = []
 }
