@@ -17,7 +17,11 @@
 | Name | Type |
 |------|------|
 | [aws_lb.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
-| [aws_lb_listener.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
+| [aws_lb_listener.http](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
+| [aws_lb_listener.https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
+| [aws_lb_listener_rule.http_redirect](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
+| [aws_lb_listener_rule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
+| [aws_lb_target_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 
@@ -32,10 +36,14 @@
 | <a name="input_enable_deletion_protection"></a> [enable\_deletion\_protection](#input\_enable\_deletion\_protection) | If true, deletion of the load balancer will be disabled via the AWS API. This will prevent Terraform from deleting the load balancer. | `bool` | `false` | no |
 | <a name="input_enable_http2"></a> [enable\_http2](#input\_enable\_http2) | Indicates whether HTTP/2 is enabled in application load balancers. | `bool` | `true` | no |
 | <a name="input_enable_waf_fail_open"></a> [enable\_waf\_fail\_open](#input\_enable\_waf\_fail\_open) | Indicates whether to allow a WAF-enabled load balancer to route requests to targets if it is unable to forward the request to AWS WAF. | `bool` | `false` | no |
+| <a name="input_http_listener_enabled"></a> [http\_listener\_enabled](#input\_http\_listener\_enabled) | Whether to create or not the http, port 80, alb listener | `bool` | `true` | no |
+| <a name="input_http_listener_port"></a> [http\_listener\_port](#input\_http\_listener\_port) | HTTP listener port | `string` | `"80"` | no |
+| <a name="input_http_listener_protocol"></a> [http\_listener\_protocol](#input\_http\_listener\_protocol) | HTTP Listener Protocol | `string` | `"HTTP"` | no |
+| <a name="input_https_listener_enabled"></a> [https\_listener\_enabled](#input\_https\_listener\_enabled) | Whether to create or not the https, port 443, alb listener | `bool` | `true` | no |
+| <a name="input_https_listener_port"></a> [https\_listener\_port](#input\_https\_listener\_port) | HTTP listener port | `string` | `"443"` | no |
 | <a name="input_idle_timeout"></a> [idle\_timeout](#input\_idle\_timeout) | The time in seconds that the connection is allowed to be idle. Only valid for Load Balancers of type application | `number` | `60` | no |
 | <a name="input_internal"></a> [internal](#input\_internal) | If true, the LB will be internal. | `bool` | `true` | no |
 | <a name="input_ip_address_type"></a> [ip\_address\_type](#input\_ip\_address\_type) | The type of IP addresses used by the subnets for your load balancer. | `string` | `"ipv4"` | no |
-| <a name="input_lb_listeners"></a> [lb\_listeners](#input\_lb\_listeners) | AWS Load Balancer Listners | `any` | `{}` | no |
 | <a name="input_load_balancer_arn"></a> [load\_balancer\_arn](#input\_load\_balancer\_arn) | Existing Load Balancer ARN | `string` | `"value"` | no |
 | <a name="input_load_balancer_type"></a> [load\_balancer\_type](#input\_load\_balancer\_type) | The type of load balancer to create. Possible values are application, gateway, or network | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | The name of the LB. This name must be unique within your AWS account, can have a maximum of 32 characters, must contain only alphanumeric characters or hyphens, and must not begin or end with a hyphen | `string` | n/a | yes |
@@ -45,8 +53,10 @@
 | <a name="input_security_group_name"></a> [security\_group\_name](#input\_security\_group\_name) | RDS Security Group Name | `string` | `""` | no |
 | <a name="input_security_group_rules"></a> [security\_group\_rules](#input\_security\_group\_rules) | A map of security group  rule definitions to add to the security group created | `map(any)` | `{}` | no |
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | Additional security groups that should be associated with the Load Balancer: applicable only for Application Load Balancers | `list(string)` | `[]` | no |
+| <a name="input_ssl_policy"></a> [ssl\_policy](#input\_ssl\_policy) | Name of the SSL Policy for the listener. | `string` | `"ELBSecurityPolicy-2016-08"` | no |
 | <a name="input_subnets"></a> [subnets](#input\_subnets) | A list of subnet IDs to attach to the LB. Subnets cannot be updated for Load Balancers of type network. Changing this value for load balancers of type network will force a recreation of the resource | `list(string)` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resource | `map(string)` | `{}` | no |
+| <a name="input_target_groups"></a> [target\_groups](#input\_target\_groups) | A list of AWS Load Balancer Target Groups | `list(any)` | `[]` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC where to create security group | `string` | `""` | no |
 
 ## Outputs
@@ -55,10 +65,13 @@
 |------|-------------|
 | <a name="output_arn"></a> [arn](#output\_arn) | The ID and ARN of the load balancer we created. |
 | <a name="output_dns_name"></a> [dns\_name](#output\_dns\_name) | The DNS name of the load balancer. |
+| <a name="output_http_listener_arn"></a> [http\_listener\_arn](#output\_http\_listener\_arn) | n/a |
+| <a name="output_https_listener_arn"></a> [https\_listener\_arn](#output\_https\_listener\_arn) | n/a |
 | <a name="output_id"></a> [id](#output\_id) | The ID and ARN of the load balancer we created. |
-| <a name="output_listener_arn"></a> [listener\_arn](#output\_listener\_arn) | n/a |
 | <a name="output_security_group_arn"></a> [security\_group\_arn](#output\_security\_group\_arn) | n/a |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | n/a |
 | <a name="output_security_group_name"></a> [security\_group\_name](#output\_security\_group\_name) | n/a |
+| <a name="output_target_group_names"></a> [target\_group\_names](#output\_target\_group\_names) | n/a |
+| <a name="output_target_groups"></a> [target\_groups](#output\_target\_groups) | n/a |
 | <a name="output_zone_id"></a> [zone\_id](#output\_zone\_id) | The zone\_id of the load balancer to assist with creating DNS records. |
 <!-- END_TF_DOCS -->
