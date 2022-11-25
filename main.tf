@@ -102,7 +102,7 @@ resource "aws_lb_target_group" "this" {
     cookie_duration = lookup(var.target_groups[count.index], "stickiness_cookie_duration", var.load_balancer_type == "application" ? 86400 : null)
     enabled         = lookup(var.target_groups[count.index], "enable_stickiness", false)
   }
-  
+
   lifecycle {
     create_before_destroy = true
   }
