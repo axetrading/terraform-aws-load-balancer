@@ -135,20 +135,15 @@ resource "aws_lb_listener_rule" "this" {
   # Host header condition
   dynamic "condition" {
     for_each = [
-      for condition_rule in var.https_listener_rules[count.index].conditions :
+      for condition_rule in var.target_groups[count.index].listner_conditions :
       condition_rule
       if length(lookup(condition_rule, "host_headers", [])) > 0
     ]
 
     content {
       host_header {
-        values = condition.value["host_headers"] #lookup(var.target_groups[count.index], "host_headers")
+        values = condition.value["host_headers"] 
       }
-    }
-  }
-  condition {
-    path_pattern {
-      values = lookup(var.target_groups[count.index], "uri_patterns")
     }
   }
   tags = var.tags
