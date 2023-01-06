@@ -118,6 +118,34 @@ resource "aws_lb_listener_rule" "this" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.this[count.index].arn
   }
+    dynamic "condition" {
+    for_each = [
+      for condition_rule in var.target_groups[count.index].listner_conditions :
+      condition_rule
+      if length(lookup(condition_rule, "path_patterns", [])) > 0
+    ]
+
+    content {
+      path_pattern {
+        values = condition.value["path_patterns"]
+      }
+    }
+  }
+
+  # Host header condition
+  dynamic "condition" {
+    for_each = [
+      for condition_rule in var.https_listener_rules[count.index].conditions :
+      condition_rule
+      if length(lookup(condition_rule, "host_headers", [])) > 0
+    ]
+
+    content {
+      host_header {
+        values = condition.value["host_headers"] #lookup(var.target_groups[count.index], "host_headers")
+      }
+    }
+  }
   condition {
     path_pattern {
       values = lookup(var.target_groups[count.index], "uri_patterns")
