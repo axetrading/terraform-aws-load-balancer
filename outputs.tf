@@ -22,29 +22,29 @@ output "zone_id" {
 # Security Group Outputs
 
 output "security_group_id" {
-  value = aws_security_group.this[0].id
+  value = try(aws_security_group.this[0].id, null)
 }
 
 output "security_group_name" {
-  value = aws_security_group.this[0].name
+  value = try(aws_security_group.this[0].name, null)
 }
 
 output "security_group_arn" {
-  value = aws_security_group.this[0].arn
+  value = try(aws_security_group.this[0].arn, null)
 }
 
 # Listeners outputs
 
 output "http_listener_arn" {
-  value = aws_lb_listener.http[0].arn
+  value = try(aws_lb_listener.http[0].arn, null)
 }
 
 output "https_listener_arn" {
-  value = aws_lb_listener.https[0].arn
+  value = try(aws_lb_listener.https[0].arn, null)
 }
 
 output "target_group_names" {
-  value = aws_lb_target_group.this[*].name
+  value = try(aws_lb_target_group.this[*].name, null)
 }
 output "target_groups" {
   value = { for k, v in aws_lb_target_group.this : v.name => {
