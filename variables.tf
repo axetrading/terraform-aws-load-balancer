@@ -156,6 +156,12 @@ variable "https_listener_enabled" {
   default     = true
 }
 
+variable "tcp_listener_enabled" {
+  type        = bool
+  description = "Whether to create or not the tcp listeners for the NLB"
+  default     = false
+}
+
 variable "certificate_arn" {
   type        = string
   description = "AWS ACM Certificate ARN that should be used for the load balancer listner HTTPS or TLS"

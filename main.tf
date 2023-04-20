@@ -10,7 +10,7 @@ resource "aws_lb" "main" {
   ip_address_type            = var.ip_address_type
   load_balancer_type         = var.load_balancer_type
   name                       = var.name
-  security_groups            = local.create_security_group ? concat([aws_security_group.this[0].id], var.security_groups) : var.security_groups
+  security_groups            = local.create_security_group && var.load_balancer_type == "application" ? try(concat([aws_security_group.this[0].id], var.security_groups), var.security_groups) : null
 
 
   subnets = var.subnets
@@ -19,7 +19,7 @@ resource "aws_lb" "main" {
 }
 
 resource "aws_lb_listener" "http" {
-  count             = var.http_listener_enabled ? 1 : 0
+  count             = var.http_listener_enabled && var.load_balancer_type == "application" ? 1 : 0
   load_balancer_arn = var.create_load_balancer ? aws_lb.main[0].arn : var.load_balancer_arn
   port              = var.http_listener_port
   protocol          = var.http_listener_protocol
@@ -36,7 +36,7 @@ resource "aws_lb_listener" "http" {
 }
 
 resource "aws_lb_listener_rule" "http_redirect" {
-  count = var.http_listener_enabled ? 1 : 0
+  count = var.http_listener_enabled && var.load_balancer_type == "application" ? 1 : 0
 
   listener_arn = aws_lb_listener.http[0].arn
 
@@ -59,7 +59,7 @@ resource "aws_lb_listener_rule" "http_redirect" {
 }
 
 resource "aws_lb_listener" "https" {
-  count             = var.https_listener_enabled ? 1 : 0
+  count             = var.https_listener_enabled && var.load_balancer_type == "application" ? 1 : 0
   load_balancer_arn = var.create_load_balancer ? aws_lb.main[0].arn : var.load_balancer_arn
   port              = var.https_listener_port
   protocol          = "HTTPS"
@@ -75,6 +75,39 @@ resource "aws_lb_listener" "https" {
       status_code  = "404"
     }
   }
+}
+
+resource "aws_lb_listener" "tcp" {
+  count             = var.tcp_listener_enabled && var.load_balancer_type == "network" ? 1 : 0
+  load_balancer_arn = var.create_load_balancer ? aws_lb.main[0].arn : var.load_balancer_arn
+  port              = lookup(var.target_groups[count.index], "tg_port", 80)
+  protocol          = "TCP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.this[count.index].arn
+  }
+}
+
+locals {
+  target_group_attachments = merge(flatten([
+    for idx, group in var.target_groups : [
+      for k, targets in group : {
+        for i, target in targets : join(".", [idx, k, i]) => merge({ tg_index = idx, tg_port = group.tg_port }, { target_id = target })
+      }
+      if k == "tg_targets"
+    ]
+  ])...)
+}
+
+resource "aws_lb_target_group_attachment" "this" {
+  for_each = {
+    for key, target in local.target_group_attachments : key => target
+  }
+
+  target_group_arn = aws_lb_target_group.this[each.value.tg_index].arn
+  target_id        = each.value.target_id
+  port             = each.value.tg_port
 }
 
 resource "aws_lb_target_group" "this" {
@@ -110,7 +143,7 @@ resource "aws_lb_target_group" "this" {
 
 
 resource "aws_lb_listener_rule" "this" {
-  count = length(var.target_groups)
+  count = var.load_balancer_type == "application" ? length(var.target_groups) : 0
 
   listener_arn = aws_lb_listener.https[0].arn
 
@@ -118,7 +151,7 @@ resource "aws_lb_listener_rule" "this" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.this[count.index].arn
   }
-    dynamic "condition" {
+  dynamic "condition" {
     for_each = [
       for condition_rule in var.target_groups[count.index].listner_conditions :
       condition_rule
@@ -142,7 +175,7 @@ resource "aws_lb_listener_rule" "this" {
 
     content {
       host_header {
-        values = condition.value["host_headers"] 
+        values = condition.value["host_headers"]
       }
     }
   }
