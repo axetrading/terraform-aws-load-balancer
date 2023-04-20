@@ -91,7 +91,7 @@ resource "aws_lb_listener" "tcp" {
 
 locals {
   target_group_attachments = merge(flatten([
-    for idx, group in var.target_group : [
+    for idx, group in var.target_groups : [
       for k, targets in group : {
         for i, target in targets : join(".", [idx, k, i]) => merge({ tg_index = idx, tg_port = group.tg_port }, { target_id = target })
       }
