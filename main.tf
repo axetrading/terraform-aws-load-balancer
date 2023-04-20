@@ -104,7 +104,7 @@ resource "aws_lb_target_group_attachment" "this" {
     for target_key, target in local.target_group_attachments : target_key => target
   }
 
-  target_group_arn = aws_lb_target_group.main[each.value.tg_index].arn
+  target_group_arn = aws_lb_target_group.this[each.value.tg_index].arn
   target_id        = each.value.target_id
   port             = lookup(each.value, "tg_port", null)
 }
