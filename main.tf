@@ -88,27 +88,27 @@ resource "aws_lb_listener" "tcp" {
     target_group_arn = aws_lb_target_group.this[count.index].arn
   }
 }
+
 locals {
   target_group_attachments = merge(flatten([
-    for idx, group in var.target_groups : [
+    for idx, group in var.target_group : [
       for k, targets in group : {
-        for target_key, target in targets : join(".", [idx, target_key]) => merge({ tg_index = idx }, target)
+        for i, target in targets : join(".", [idx, k, i]) => merge({ tg_index = idx, tg_port = group.tg_port }, { target_id = target })
       }
-      if k == "targets"
+      if k == "tg_targets"
     ]
   ])...)
 }
 
 resource "aws_lb_target_group_attachment" "this" {
   for_each = {
-    for target_key, target in local.target_group_attachments : target_key => target
+    for key, target in local.target_group_attachments : key => target
   }
 
   target_group_arn = aws_lb_target_group.this[each.value.tg_index].arn
   target_id        = each.value.target_id
-  port             = lookup(each.value, "tg_port", null)
+  port             = each.value.tg_port
 }
-
 
 resource "aws_lb_target_group" "this" {
   count                = length(var.target_groups)
