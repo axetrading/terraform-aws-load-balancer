@@ -89,9 +89,9 @@ resource "aws_lb_listener" "tcp" {
   }
 }
 locals {
-  targets = flatten([for tg in var.target_groups : [for instance_id in tg["instance_ids"] :
+  targets = flatten([for tg in var.target_groups : [for instance_id in tg["tg_instance_ids"] :
     {
-      target_group_idx = tg["target_group_idx"]
+      target_group_idx = tg["tg_name"]
       target_id        = instance_id
   }]])
 }
