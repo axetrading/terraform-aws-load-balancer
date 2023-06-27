@@ -10,7 +10,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.36 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.63.0 |
 
 ## Resources
 
@@ -19,7 +19,7 @@
 | [aws_lb.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
 | [aws_lb_listener.http](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
 | [aws_lb_listener.https](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
-| [aws_lb_listener.tcp](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
+| [aws_lb_listener.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
 | [aws_lb_listener_rule.http_redirect](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
 | [aws_lb_listener_rule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule) | resource |
 | [aws_lb_target_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
@@ -59,7 +59,7 @@
 | <a name="input_subnets"></a> [subnets](#input\_subnets) | A list of subnet IDs to attach to the LB. Subnets cannot be updated for Load Balancers of type network. Changing this value for load balancers of type network will force a recreation of the resource | `list(string)` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resource | `map(string)` | `{}` | no |
 | <a name="input_target_groups"></a> [target\_groups](#input\_target\_groups) | A list of AWS Load Balancer Target Groups | `list(any)` | `[]` | no |
-| <a name="input_tcp_listener_enabled"></a> [tcp\_listener\_enabled](#input\_tcp\_listener\_enabled) | Whether to create or not the tcp listeners for the NLB | `bool` | `false` | no |
+| <a name="input_tcp_udp_listener_enabled"></a> [tcp\_udp\_listener\_enabled](#input\_tcp\_udp\_listener\_enabled) | Whether to create or not the tcp or udp listeners for the NLB | `bool` | `false` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC where to create security group | `string` | `""` | no |
 
 ## Outputs
@@ -76,5 +76,6 @@
 | <a name="output_security_group_name"></a> [security\_group\_name](#output\_security\_group\_name) | n/a |
 | <a name="output_target_group_names"></a> [target\_group\_names](#output\_target\_group\_names) | n/a |
 | <a name="output_target_groups"></a> [target\_groups](#output\_target\_groups) | n/a |
+| <a name="output_tcp_udp_listeners"></a> [tcp\_udp\_listeners](#output\_tcp\_udp\_listeners) | n/a |
 | <a name="output_zone_id"></a> [zone\_id](#output\_zone\_id) | The zone\_id of the load balancer to assist with creating DNS records. |
 <!-- END_TF_DOCS -->

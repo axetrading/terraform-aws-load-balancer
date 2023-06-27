@@ -77,11 +77,11 @@ resource "aws_lb_listener" "https" {
   }
 }
 
-resource "aws_lb_listener" "tcp" {
-  count             = var.tcp_listener_enabled && var.load_balancer_type == "network" ? length(var.target_groups) : 0
+resource "aws_lb_listener" "this" {
+  count             = var.tcp_udp_listener_enabled && var.load_balancer_type == "network" ? length(var.target_groups) : 0
   load_balancer_arn = var.create_load_balancer ? aws_lb.main[0].arn : var.load_balancer_arn
   port              = lookup(var.target_groups[count.index], "tg_port", 80)
-  protocol          = "TCP"
+  protocol          = lookup(var.target_groups[count.index], "tg_protocol", "TCP")
 
   default_action {
     type             = "forward"
@@ -110,7 +110,7 @@ resource "aws_lb_target_group_attachment" "this" {
   port             = each.value.tg_port
 
   depends_on = [
-    aws_lb.main, aws_lb_listener.tcp, 
+    aws_lb.main, aws_lb_listener.this,
   ]
 }
 

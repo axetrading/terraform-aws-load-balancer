@@ -156,9 +156,9 @@ variable "https_listener_enabled" {
   default     = true
 }
 
-variable "tcp_listener_enabled" {
+variable "tcp_udp_listener_enabled" {
   type        = bool
-  description = "Whether to create or not the tcp listeners for the NLB"
+  description = "Whether to create or not the tcp or udp listeners for the NLB"
   default     = false
 }
 

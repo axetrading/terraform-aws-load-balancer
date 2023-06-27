@@ -43,6 +43,10 @@ output "https_listener_arn" {
   value = try(aws_lb_listener.https[0].arn, null)
 }
 
+output "tcp_udp_listeners" {
+  value = try(aws_lb_listener.this[*].arn, null)
+}
+
 output "target_group_names" {
   value = try(aws_lb_target_group.this[*].name, null)
 }
