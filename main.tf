@@ -12,6 +12,16 @@ resource "aws_lb" "main" {
   name                       = var.name
   security_groups            = local.create_security_group && var.load_balancer_type == "application" ? try(concat([aws_security_group.this[0].id], var.security_groups), var.security_groups) : null
 
+  dynamic "access_logs" {
+    for_each = var.enable_access_logs && var.load_balancer_type == "application" ? [1] : []
+    content {
+      bucket  = var.access_logs_bucket
+      enabled = try(var.enable_access_logs, null)
+      prefix  = try(var.access_logs_prefix, null)
+    }
+
+  }
+
 
   subnets = var.subnets
 

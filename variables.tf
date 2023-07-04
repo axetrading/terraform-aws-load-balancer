@@ -185,3 +185,21 @@ variable "target_groups" {
   description = "A list of AWS Load Balancer Target Groups"
   default     = []
 }
+
+variable "enable_access_logs" {
+  type        = bool
+  description = "Enable access logs for the load balancer"
+  default     = false
+}
+
+variable "access_logs_bucket" {
+  type        = string
+  description = "S3 bucket name to store the logs in"
+  default     = null
+}
+
+variable "access_logs_prefix" {
+  type        = string
+  description = "S3 bucket prefix to store the logs in"
+  default     = null
+}
