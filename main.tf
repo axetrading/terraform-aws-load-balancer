@@ -15,13 +15,14 @@ resource "aws_lb" "main" {
   dynamic "access_logs" {
     for_each = var.enable_access_logs && var.load_balancer_type == "application" ? [1] : []
     content {
-      bucket  = var.access_logs_bucket
       enabled = try(var.enable_access_logs, null)
       prefix  = try(var.access_logs_prefix, null)
+
+      # Create an S3 bucket for load balancer logs if the flag is enabled
+      # or use an existing bucket if the name is provided
+      bucket = var.create_access_logs_bucket ? aws_s3_bucket.access_logs.id : var.existing_access_logs_bucket
     }
-
   }
-
 
   subnets = var.subnets
 

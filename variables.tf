@@ -192,7 +192,13 @@ variable "enable_access_logs" {
   default     = false
 }
 
-variable "access_logs_bucket" {
+variable "existing_access_logs_bucket" {
+  type        = string
+  description = "S3 bucket name to store the logs in"
+  default     = null
+}
+
+variable "access_logs_bucket_name" {
   type        = string
   description = "S3 bucket name to store the logs in"
   default     = null
@@ -202,4 +208,10 @@ variable "access_logs_prefix" {
   type        = string
   description = "S3 bucket prefix to store the logs in"
   default     = null
+}
+
+variable "create_access_logs_bucket" {
+  type        = bool
+  default     = false
+  description = "Create an S3 bucket for load balancer logs if the flag is enabled"
 }
