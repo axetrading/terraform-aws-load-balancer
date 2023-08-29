@@ -20,7 +20,7 @@ resource "aws_lb" "main" {
 
       # Create an S3 bucket for load balancer logs if the flag is enabled
       # or use an existing bucket if the name is provided
-      bucket = var.create_access_logs_bucket ? aws_s3_bucket.access_logs.id : var.existing_access_logs_bucket
+      bucket = var.create_access_logs_bucket ? aws_s3_bucket.access_logs[0].id : var.existing_access_logs_bucket
     }
   }
 
