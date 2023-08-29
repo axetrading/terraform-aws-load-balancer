@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "s3_access_policy" {
 
     # Use the ARN of the S3 bucket created by the resource if the flag is enabled
     # or use the ARN pattern if the name is provided
-    resources = var.create_access_logs_bucket ? [aws_s3_bucket.access_logs[0].arn] : ["arn:aws:s3:::${var.existing_access_logs_bucket}/*"]
+    resources = var.create_access_logs_bucket ? ["${aws_s3_bucket.access_logs[0].arn}/*"] : ["arn:aws:s3:::${var.existing_access_logs_bucket}/*"]
   }
 }
 
