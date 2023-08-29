@@ -1,6 +1,10 @@
-
-data "aws_caller_identity" "current" {
-  count = var.enable_access_logs ? 1 : 0
+locals {
+  access_log_account_id = {
+    eu-west-2      = "652711504416"
+    ap-southeast-2 = "783225319266"
+    ap-southeast-1 = "114774131450"
+    us-east-1      = "127311923021"
+  }
 }
 
 resource "aws_s3_bucket" "access_logs" {
@@ -18,8 +22,9 @@ data "aws_iam_policy_document" "s3_access_policy" {
     effect = "Allow"
 
     principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current[0].account_id}:root"]
+      type = "AWS"
+      # Fetch the account ID based on the region
+      identifiers = ["arn:aws:iam::${local.access_log_account_id[var.region]}:root"]
     }
 
     actions = ["s3:PutObject"]
