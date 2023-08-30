@@ -59,3 +59,7 @@ output "target_groups" {
     }
   }
 }
+
+output "lb_access_logs_bucket" {
+  value = try(aws_s3_bucket.access_logs[0].id, null)
+}
