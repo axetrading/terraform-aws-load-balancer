@@ -79,6 +79,7 @@
 | <a name="output_http_listener_arn"></a> [http\_listener\_arn](#output\_http\_listener\_arn) | n/a |
 | <a name="output_https_listener_arn"></a> [https\_listener\_arn](#output\_https\_listener\_arn) | n/a |
 | <a name="output_id"></a> [id](#output\_id) | The ID and ARN of the load balancer we created. |
+| <a name="output_lb_access_logs_bucket"></a> [lb\_access\_logs\_bucket](#output\_lb\_access\_logs\_bucket) | n/a |
 | <a name="output_security_group_arn"></a> [security\_group\_arn](#output\_security\_group\_arn) | n/a |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | n/a |
 | <a name="output_security_group_name"></a> [security\_group\_name](#output\_security\_group\_name) | n/a |
