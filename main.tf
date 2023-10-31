@@ -10,7 +10,7 @@ resource "aws_lb" "main" {
   ip_address_type            = var.ip_address_type
   load_balancer_type         = var.load_balancer_type
   name                       = var.name
-  security_groups            = local.create_security_group && var.load_balancer_type == "application" ? try(concat([aws_security_group.this[0].id], var.security_groups), var.security_groups) : null
+  security_groups            = local.create_security_group ? concat([aws_security_group.this[0].id], var.security_groups) : var.security_groups
 
   dynamic "access_logs" {
     for_each = var.enable_access_logs && var.load_balancer_type == "application" ? [1] : []

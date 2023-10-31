@@ -1,7 +1,7 @@
 
 
 locals {
-  create_security_group = var.load_balancer_type == "application" && var.create_security_group
+  create_security_group = (var.load_balancer_type == "application" || var.load_balancer_type == "network") && var.create_security_group
 }
 resource "aws_security_group" "this" {
   count = local.create_security_group ? 1 : 0
