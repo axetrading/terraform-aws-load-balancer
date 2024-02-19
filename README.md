@@ -25,10 +25,13 @@
 | [aws_lb_target_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
 | [aws_lb_target_group_attachment.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group_attachment) | resource |
 | [aws_s3_bucket.access_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket.connection_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket_policy.access_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
+| [aws_s3_bucket_policy.connection_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_iam_policy_document.s3_access_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.s3_connection_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
 
@@ -37,15 +40,22 @@
 | <a name="input_access_logs_bucket_name"></a> [access\_logs\_bucket\_name](#input\_access\_logs\_bucket\_name) | S3 bucket name to store the logs in | `string` | `null` | no |
 | <a name="input_access_logs_prefix"></a> [access\_logs\_prefix](#input\_access\_logs\_prefix) | S3 bucket prefix to store the logs in | `string` | `null` | no |
 | <a name="input_certificate_arn"></a> [certificate\_arn](#input\_certificate\_arn) | AWS ACM Certificate ARN that should be used for the load balancer listner HTTPS or TLS | `string` | `null` | no |
+| <a name="input_connection_logs_bucket_name"></a> [connection\_logs\_bucket\_name](#input\_connection\_logs\_bucket\_name) | S3 bucket name to store the logs in | `string` | `null` | no |
+| <a name="input_connection_logs_prefix"></a> [connection\_logs\_prefix](#input\_connection\_logs\_prefix) | S3 bucket prefix to store the logs in | `string` | `null` | no |
 | <a name="input_create_access_logs_bucket"></a> [create\_access\_logs\_bucket](#input\_create\_access\_logs\_bucket) | Create an S3 bucket for load balancer logs if the flag is enabled | `bool` | `false` | no |
+| <a name="input_create_connection_logs_bucket"></a> [create\_connection\_logs\_bucket](#input\_create\_connection\_logs\_bucket) | Create an S3 bucket for load balancer logs if the flag is enabled | `bool` | `false` | no |
 | <a name="input_create_load_balancer"></a> [create\_load\_balancer](#input\_create\_load\_balancer) | Set to false to skip the load balancer creation | `bool` | `true` | no |
 | <a name="input_create_security_group"></a> [create\_security\_group](#input\_create\_security\_group) | Determines whether to create security group for RDS cluster | `bool` | `true` | no |
 | <a name="input_desync_mitigation_mode"></a> [desync\_mitigation\_mode](#input\_desync\_mitigation\_mode) | Determines how the load balancer handles requests that might pose a security risk to an application due to HTTP desync. | `string` | `"defensive"` | no |
+| <a name="input_dns_record_client_routing_policy"></a> [dns\_record\_client\_routing\_policy](#input\_dns\_record\_client\_routing\_policy) | Indicates how traffic is distributed among the load balancer Availability Zones. Possible values are any\_availability\_zone (default), availability\_zone\_affinity, or partial\_availability\_zone\_affinity. Only valid for network type load balancers. | `string` | `null` | no |
 | <a name="input_enable_access_logs"></a> [enable\_access\_logs](#input\_enable\_access\_logs) | Enable access logs for the load balancer | `bool` | `false` | no |
+| <a name="input_enable_connection_logs"></a> [enable\_connection\_logs](#input\_enable\_connection\_logs) | Enable connection logs for the load balancer | `bool` | `false` | no |
+| <a name="input_enable_cross_zone_load_balancing"></a> [enable\_cross\_zone\_load\_balancing](#input\_enable\_cross\_zone\_load\_balancing) | If true, cross-zone load balancing of the load balancer will be enabled. For network and gateway type load balancers, this feature is disabled by default (false). For application load balancer this feature is always enabled (true) and cannot be disabled | `bool` | `true` | no |
 | <a name="input_enable_deletion_protection"></a> [enable\_deletion\_protection](#input\_enable\_deletion\_protection) | If true, deletion of the load balancer will be disabled via the AWS API. This will prevent Terraform from deleting the load balancer. | `bool` | `false` | no |
 | <a name="input_enable_http2"></a> [enable\_http2](#input\_enable\_http2) | Indicates whether HTTP/2 is enabled in application load balancers. | `bool` | `true` | no |
 | <a name="input_enable_waf_fail_open"></a> [enable\_waf\_fail\_open](#input\_enable\_waf\_fail\_open) | Indicates whether to allow a WAF-enabled load balancer to route requests to targets if it is unable to forward the request to AWS WAF. | `bool` | `false` | no |
 | <a name="input_existing_access_logs_bucket"></a> [existing\_access\_logs\_bucket](#input\_existing\_access\_logs\_bucket) | S3 bucket name to store the logs in | `string` | `null` | no |
+| <a name="input_existing_connection_logs_bucket"></a> [existing\_connection\_logs\_bucket](#input\_existing\_connection\_logs\_bucket) | S3 bucket name to store the logs in | `string` | `null` | no |
 | <a name="input_http_listener_enabled"></a> [http\_listener\_enabled](#input\_http\_listener\_enabled) | Whether to create or not the http, port 80, alb listener | `bool` | `true` | no |
 | <a name="input_http_listener_port"></a> [http\_listener\_port](#input\_http\_listener\_port) | HTTP listener port | `string` | `"80"` | no |
 | <a name="input_http_listener_protocol"></a> [http\_listener\_protocol](#input\_http\_listener\_protocol) | HTTP Listener Protocol | `string` | `"HTTP"` | no |

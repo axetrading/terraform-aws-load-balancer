@@ -1,19 +1,22 @@
 resource "aws_lb" "main" {
   count = var.create_load_balancer ? 1 : 0
 
-  desync_mitigation_mode     = var.desync_mitigation_mode
-  enable_deletion_protection = var.enable_deletion_protection
-  enable_http2               = var.enable_http2
-  enable_waf_fail_open       = var.enable_waf_fail_open
-  idle_timeout               = var.idle_timeout
-  internal                   = var.internal
-  ip_address_type            = var.ip_address_type
-  load_balancer_type         = var.load_balancer_type
-  name                       = var.name
-  security_groups            = local.create_security_group ? concat([aws_security_group.this[0].id], var.security_groups) : var.security_groups
+  name                             = var.name
+  desync_mitigation_mode           = var.desync_mitigation_mode
+  dns_record_client_routing_policy = var.dns_record_client_routing_policy
+  enable_cross_zone_load_balancing = var.enable_cross_zone_load_balancing
+  enable_deletion_protection       = var.enable_deletion_protection
+  enable_http2                     = var.enable_http2
+  enable_waf_fail_open             = var.enable_waf_fail_open
+  idle_timeout                     = var.idle_timeout
+  internal                         = var.internal
+  ip_address_type                  = var.ip_address_type
+  load_balancer_type               = var.load_balancer_type
+
+  security_groups = local.create_security_group ? concat([aws_security_group.this[0].id], var.security_groups) : var.security_groups
 
   dynamic "access_logs" {
-    for_each = var.enable_access_logs && var.load_balancer_type == "application" ? [1] : []
+    for_each = var.enable_access_logs ? [1] : []
     content {
       enabled = try(var.enable_access_logs, null)
       prefix  = try(var.access_logs_prefix, null)
@@ -21,6 +24,19 @@ resource "aws_lb" "main" {
       # Create an S3 bucket for load balancer logs if the flag is enabled
       # or use an existing bucket if the name is provided
       bucket = var.create_access_logs_bucket ? aws_s3_bucket.access_logs[0].id : var.existing_access_logs_bucket
+    }
+  }
+
+  dynamic "connection_logs" {
+    for_each = var.enable_connection_logs && var.load_balancer_type == "application" ? [1] : []
+    content {
+      enabled = try(var.enable_connection_logs, null)
+      prefix  = try(var.connection_logs_prefix, null)
+
+      # Create an S3 bucket for load balancer logs if the flag is enabled
+      # or use an existing bucket if the name is provided
+      bucket = var.create_connection_logs_bucket ? aws_s3_bucket.connection_logs[0].id : var.existing_connection_logs_bucket
+
     }
   }
 

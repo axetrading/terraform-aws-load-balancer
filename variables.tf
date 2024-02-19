@@ -171,7 +171,7 @@ variable "certificate_arn" {
 variable "ssl_policy" {
   type        = string
   description = "Name of the SSL Policy for the listener."
-  default     = "ELBSecurityPolicy-2016-08"
+  default     = "ELBSecurityPolicy-TLS13-1-2-2021-06"
 }
 
 variable "load_balancer_arn" {
@@ -192,7 +192,19 @@ variable "enable_access_logs" {
   default     = false
 }
 
+variable "enable_connection_logs" {
+  type        = bool
+  description = "Enable connection logs for the load balancer"
+  default     = false
+}
+
 variable "existing_access_logs_bucket" {
+  type        = string
+  description = "S3 bucket name to store the logs in"
+  default     = null
+}
+
+variable "existing_connection_logs_bucket" {
   type        = string
   description = "S3 bucket name to store the logs in"
   default     = null
@@ -204,7 +216,19 @@ variable "access_logs_bucket_name" {
   default     = null
 }
 
+variable "connection_logs_bucket_name" {
+  type        = string
+  description = "S3 bucket name to store the logs in"
+  default     = null
+}
+
 variable "access_logs_prefix" {
+  type        = string
+  description = "S3 bucket prefix to store the logs in"
+  default     = null
+}
+
+variable "connection_logs_prefix" {
   type        = string
   description = "S3 bucket prefix to store the logs in"
   default     = null
@@ -214,4 +238,22 @@ variable "create_access_logs_bucket" {
   type        = bool
   default     = false
   description = "Create an S3 bucket for load balancer logs if the flag is enabled"
+}
+
+variable "create_connection_logs_bucket" {
+  type        = bool
+  default     = false
+  description = "Create an S3 bucket for load balancer logs if the flag is enabled"
+}
+
+variable "enable_cross_zone_load_balancing" {
+  description = "If true, cross-zone load balancing of the load balancer will be enabled. For network and gateway type load balancers, this feature is disabled by default (false). For application load balancer this feature is always enabled (true) and cannot be disabled"
+  type        = bool
+  default     = true
+}
+
+variable "dns_record_client_routing_policy" {
+  description = "Indicates how traffic is distributed among the load balancer Availability Zones. Possible values are any_availability_zone (default), availability_zone_affinity, or partial_availability_zone_affinity. Only valid for network type load balancers."
+  type        = string
+  default     = null
 }
