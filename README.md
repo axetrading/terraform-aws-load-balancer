@@ -74,6 +74,7 @@
 | <a name="input_security_group_rules"></a> [security\_group\_rules](#input\_security\_group\_rules) | A map of security group  rule definitions to add to the security group created | `map(any)` | `{}` | no |
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | Additional security groups that should be associated with the Load Balancer: applicable only for Application Load Balancers | `list(string)` | `[]` | no |
 | <a name="input_ssl_policy"></a> [ssl\_policy](#input\_ssl\_policy) | Name of the SSL Policy for the listener. | `string` | `"ELBSecurityPolicy-TLS13-1-2-2021-06"` | no |
+| <a name="input_subnet_mapping"></a> [subnet\_mapping](#input\_subnet\_mapping) | A map of subnet mapping blocks describing subnets to attach to the load balancer, keyed by an identifier | `map(any)` | `{}` | no |
 | <a name="input_subnets"></a> [subnets](#input\_subnets) | A list of subnet IDs to attach to the LB. Subnets cannot be updated for Load Balancers of type network. Changing this value for load balancers of type network will force a recreation of the resource | `list(string)` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the resource | `map(string)` | `{}` | no |
 | <a name="input_target_groups"></a> [target\_groups](#input\_target\_groups) | A list of AWS Load Balancer Target Groups | `list(any)` | `[]` | no |

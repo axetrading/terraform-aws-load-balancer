@@ -257,3 +257,9 @@ variable "dns_record_client_routing_policy" {
   type        = string
   default     = null
 }
+
+variable "subnet_mapping" {
+  description = "A map of subnet mapping blocks describing subnets to attach to the load balancer, keyed by an identifier"
+  type        = map(any)
+  default     = {}
+}

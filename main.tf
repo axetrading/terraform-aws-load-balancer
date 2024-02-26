@@ -40,6 +40,18 @@ resource "aws_lb" "main" {
     }
   }
 
+  dynamic "subnet_mapping" {
+    for_each = var.subnet_mapping
+
+    content {
+      allocation_id        = try(subnet_mapping.value["allocation_id"], null)
+      ipv6_address         = try(subnet_mapping.value["ipv6_address"], null)
+      private_ipv4_address = try(subnet_mapping.value["private_ipv4_address"], null)
+      subnet_id            = subnet_mapping.value["subnet_id"]
+    }
+  }
+
+
   subnets = var.subnets
 
   tags = var.tags
