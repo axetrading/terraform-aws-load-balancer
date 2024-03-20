@@ -164,7 +164,6 @@ resource "aws_lb_target_group" "this" {
   vpc_id               = var.vpc_id
   target_type          = lookup(var.target_groups[count.index], "target_type", "ip")
   deregistration_delay = lookup(var.target_groups[count.index], "deregistration_delay", 300)
-  tags                 = var.tags
   health_check {
     port                = lookup(var.target_groups[count.index], "health_check_port", 80)
     protocol            = lookup(var.target_groups[count.index], "health_check_protocol", "HTTP")
@@ -184,7 +183,10 @@ resource "aws_lb_target_group" "this" {
   lifecycle {
     create_before_destroy = true
   }
-
+  tags = merge(
+    var.tags,
+    lookup(var.target_groups[count.index], "tags", {})
+  )
 }
 
 
