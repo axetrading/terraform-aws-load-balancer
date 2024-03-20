@@ -104,6 +104,7 @@ resource "aws_lb_listener" "https" {
   protocol          = "HTTPS"
   ssl_policy        = var.ssl_policy
   certificate_arn   = var.certificate_arn
+  tags             = var.tags
 
   default_action {
     type = "fixed-response"
@@ -121,6 +122,7 @@ resource "aws_lb_listener" "this" {
   load_balancer_arn = var.create_load_balancer ? aws_lb.main[0].arn : var.load_balancer_arn
   port              = lookup(var.target_groups[count.index], "tg_port", 80)
   protocol          = lookup(var.target_groups[count.index], "tg_protocol", "TCP")
+  tags              = var.tags
 
   default_action {
     type             = "forward"
@@ -162,7 +164,7 @@ resource "aws_lb_target_group" "this" {
   vpc_id               = var.vpc_id
   target_type          = lookup(var.target_groups[count.index], "target_type", "ip")
   deregistration_delay = lookup(var.target_groups[count.index], "deregistration_delay", 300)
-
+  tags                 = var.tags
   health_check {
     port                = lookup(var.target_groups[count.index], "health_check_port", 80)
     protocol            = lookup(var.target_groups[count.index], "health_check_protocol", "HTTP")
@@ -182,6 +184,8 @@ resource "aws_lb_target_group" "this" {
   lifecycle {
     create_before_destroy = true
   }
+
+
 }
 
 
