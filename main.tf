@@ -104,7 +104,7 @@ resource "aws_lb_listener" "https" {
   protocol          = "HTTPS"
   ssl_policy        = var.ssl_policy
   certificate_arn   = var.certificate_arn
-  tags             = var.tags
+  tags              = var.tags
 
   default_action {
     type = "fixed-response"
