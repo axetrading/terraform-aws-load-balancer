@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "s3_connection_policy" {
 }
 
 resource "aws_s3_bucket_policy" "connection_logs" {
-  count = var.enable_access_logs ? 1 : 0
+  count = var.enable_connection_logs ? 1 : 0
 
   bucket = var.create_connection_logs_bucket ? aws_s3_bucket.connection_logs[0].id : var.existing_connection_logs_bucket
 
