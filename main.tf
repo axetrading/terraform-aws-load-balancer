@@ -181,7 +181,7 @@ resource "aws_lb_target_group" "this" {
   }
 
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }
   tags = merge(
     var.tags,
