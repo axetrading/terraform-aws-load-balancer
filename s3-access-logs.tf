@@ -20,7 +20,7 @@ data "aws_iam_policy_document" "s3_access_policy" {
         identifiers = ["arn:aws:iam::${local.access_log_account_id[var.region]}:root"]
       }
 
-      actions = statement.value.actions
+      actions = ["s3:PutObject"]
 
       # Use the ARN of the S3 bucket created by the resource if the flag is enabled
       # or use the ARN pattern if the name is provided
